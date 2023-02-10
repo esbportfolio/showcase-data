@@ -1,6 +1,6 @@
 Command Prompt.lnk
-.env
-errorlog.txt
+**.env
 **.csv
 **.bat
 **.txt
+**.lnk
