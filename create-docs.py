@@ -52,7 +52,7 @@ if os.path.exists(skip_addr):
     csv_file.close()
 
 # Sets up the fields that will turn into a bulleted list
-bullet_fields = ['Entry Feature 1', 'Entry Feature 2', 'Entry Feature 3', 'Entry Feature 4', 'Entry Feature 5', 'Entry Feature 6']
+# bullet_fields = ['Entry Feature 1', 'Entry Feature 2', 'Entry Feature 3', 'Entry Feature 4', 'Entry Feature 5', 'Entry Feature 6']
 table_data = [
     {'label' : 'Finished SqFt (Not Including Garage)', 'field' : 'Living SF'},
     {'label' : 'Total SqFt (Not Including Garage)', 'field' : 'Total SF'},
@@ -106,9 +106,9 @@ for entry in import_data:
         paragraph.add_run(entry['Description'])
         
         # Add bulleted list of features
-        for field in bullet_fields:
-            if len(entry[field]) > 0:
-                document.add_paragraph(entry[field], style='List Bullet')
+        # for field in bullet_fields:
+            # if len(entry[field]) > 0:
+                # document.add_paragraph(entry[field], style='List Bullet')
         
         if entry['Entry Type'] == 'Single-Family Home' or entry['Entry Type'] == 'Townhome Unit':
             # Write home style
