@@ -1,6 +1,9 @@
 Command Prompt.lnk
+write_json.py
 **.env
 **.csv
 **.bat
 **.txt
 **.lnk
+**.json
+old_*
