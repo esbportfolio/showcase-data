@@ -28,15 +28,25 @@ with open("errorlog.txt", "w") as f:
 f.close()
 
 # Read data from JSON file
-file_info = json.load(open('info.json'))
+file_info = json.load(open('info.json'))['showcase']
 import_addr = file_info['dir'] + '\\' + file_info['filename']
+exclude_addr = file_info['dir'] + '\\' + file_info['exclude']
+
+# Gets a list of registration IDs to exclude
+with open(exclude_addr, newline='') as csv_file:
+    exclude_data = set(
+        row['RegID'] for row in csv.DictReader(csv_file)
+    )
+csv_file.close()
 
 # Creates a list of dictionaries from the CSV data,
 # excluding any that are marked as having the Word doc done
+# and any on the exclude list
 with open(import_addr, newline='') as csv_file:
     import_data = [
         row for row in csv.DictReader(csv_file)
         if row['Word Doc Done'] == 'No'
+        and row['RegID'] not in exclude_data
     ]
 csv_file.close()
 
@@ -81,7 +91,8 @@ for entry in import_data:
 
     # Write the address
     paragraph = document.add_paragraph()
-    paragraph.add_run(entry['Entry Street Address'] + ' {0} '.format(EM_DASH) + entry['Entry City']).bold = True
+    # paragraph.add_run(entry['Entry Street Address'] + ' {0} '.format(EM_DASH) + entry['Entry City']).bold = True
+    paragraph.add_run(entry['Entry Street Address'] + ' ' + entry['Entry City']).bold = True
 
     # Write subdivision
     paragraph = document.add_paragraph()
@@ -96,7 +107,10 @@ for entry in import_data:
     # Add bulleted list of features
     for field in bullet_fields:
         if len(entry[field]) > 0:
-            document.add_paragraph(entry[field], style='List Bullet')
+            # document.add_paragraph(entry[field], style='List Bullet')
+            document.add_paragraph(entry[field], style='No Spacing')
+    # Add extra space (for non-bullet style)
+    document.add_paragraph('', style='No Spacing')
 
     if entry['Entry Type'] == 'Single-Family Home' or entry['Entry Type'] == 'Townhome Unit':
         # Write home style
